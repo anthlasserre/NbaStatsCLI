@@ -1,7 +1,9 @@
 #!/usr/bin/env node
+
 const program = require('commander')
-const { getPlayerStat } = require('./getJson')
-const { player } = require('./player')
+const { getPlayerStat, getTeamStat } = require('./getJson')
+const { playerData, playerPicture } = require('./player')
+const { teamData } = require('./team')
 
 program
 .version('1.0.0')
@@ -19,12 +21,19 @@ if (program.player) {
     const firstname = process.argv[3].toLocaleLowerCase()
     const lastname = process.argv[4].toLocaleLowerCase()
     getPlayerStat(lastname, firstname).then((data) => {
-        player(data, lastname, firstname)
+        playerData(data)
+        playerPicture(firstname, lastname)
     }).catch((err) => {
         console.log("Error:", err)
     })
 } else if (program.team) {
-    console.log(`You are searching ${program.team} team`)
+    const teamname = `${program.team}`
+    console.log('You are searching: ', teamname)
+    getTeamStat(teamname).then((data) => {
+        teamData(data)
+    }).catch((err) => {
+        console.log("Error:", err)
+    })
 } else if (program.game) {
     console.log(`You are searching ${program.game} game`)
 } else {
