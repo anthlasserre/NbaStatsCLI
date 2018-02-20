@@ -41,8 +41,9 @@ option `-t`  to search a team.
 
 
 ## Examples
-
 ### Search a player
+<img src="https://raw.githubusercontent.com/anthlasserre/NbaStatsCLI/master/imgReadme/nbaStatsSearchPlayer.gif" width="400" />
 
 ### Search a team
+<img src="https://raw.githubusercontent.com/anthlasserre/NbaStatsCLI/master/imgReadme/nbaStatsSearchTeamPlayer.gif" width="400" />
 
