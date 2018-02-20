@@ -1,23 +1,30 @@
 #!/usr/bin/env node
 
-const { playerData, playerPicture } = require('./player');
-const { getPlayerStat } = require('./getJson');
 const request = require('request');
 const pictureTube = require('picture-tube')
 const inquirer = require('inquirer')
+const chalk = require('chalk')
 
-const chooseTeam = {
-    "sas" : "San Antonio Spurs",
-    "atl" : "Atlanta Hawks",
-}
+const { playerData, playerPicture } = require('./player');
+const { getPlayerStat } = require('./getJson');
+
 var playersTeam = [];
+
+module.exports.getTeamName = function (teamname) {
+    console.log(chalk.bgRed(chooseTeam[teamname]))
+}
 
 // Get Player Stats from JSON
 module.exports.teamData = function (data) {
     const jsonObject = JSON.parse(data);
     const countPlayers = jsonObject.length;
-    console.log('------------------')
-    console.log('Players: ' + countPlayers)
+    if(countPlayers == 0) {
+        console.log(chalk.bgRed("Please enter a team like this:"));
+        console.log(chalk.bgGreen("nbastats -t sas") + " (for San Antonio Spurs)");
+        console.log(chooseTeam)
+        return;
+    }
+    console.log('We\'ve found ' + countPlayers + " players!")
 
     for(i = 0; i < countPlayers; i++) {
     playersTeam.push(jsonObject[i].name)
@@ -28,20 +35,17 @@ module.exports.teamData = function (data) {
 inquirer.prompt([
     {
         type: 'list',
-        message: 'Which players you want to know',
+        message: 'Choose a player to view his stats',
         name: 'choicePlayer',
         choices: playersTeam
     },
 ]).then((answers) => {
-    // console.log(answers.choicePlayer[0])
     if(answers){
         console.log("This is " + answers.choicePlayer + " stats!")
         const fullname = answers.choicePlayer
-        // console.log('You are searching: ', fullname)
         var indexSpace = fullname.indexOf(' ') ;
         const firstname = fullname.substring(0, indexSpace);
         const lastname = fullname.substring(indexSpace + 1);
-        // console.log(firstname + " " + lastname)
         getPlayerStat(lastname, firstname).then((data) => {
             playerData(data)
             playerPicture(firstname, lastname)
@@ -53,44 +57,35 @@ inquirer.prompt([
 
 }
 
-
-// Get Team Logo from URL
-// module.exports.teamLogo = function (teamname) {
-//     // Display Player Picture
-//     const tube = pictureTube();
-//     tube.pipe(process.stdout);
-//     request(`https://nba-players.herokuapp.com/players/${lastname}/${firstname}`).pipe(tube);
-// }
-
-// Array chooseTeam = {
-//     "gsw",
-//     "lac",
-//     "lal",
-//     "pho",
-//     "sac",
-//     "dal",
-//     "hou",
-//     "mem",
-//     "nor",
-//     "sas" : "San Antonio Spurs",
-//     "den",
-//     "min",
-//     "okc",
-//     "por",
-//     "uth",
-//     "bos",
-//     "bro",
-//     "nyk",
-//     "phi",
-//     "tor",
-//     "chi",
-//     "cle",
-//     "det",
-//     "ind",
-//     "mil",
-//     "atl" : "Atlanta Hawks",
-//     "cha",
-//     "mia",
-//     "orl",
-//     "was",
-// }
+const chooseTeam = {
+    "gsw":"Golden State Warriors",
+    "lac":"Los Angeles Clippers",
+    "lal":"Los Angeles Lakers",
+    "pho":"Phoenix Suns",
+    "sac":"Sacramento Kings",
+    "dal":"Dallas Mavericks",
+    "hou":"Houston Rockets",
+    "mem":"Memphis Grizzlies",
+    "nor":"New Orleans Pelicans",
+    "sas":"San Antonio Spurs",
+    "den":"Denver Nuggets",
+    "min":"Minnesota Timberwolves",
+    "okc":"Oklahoma City Thunder",
+    "por":"Portland Trail Blazers",
+    "uth":"Utah Jazz",
+    "bos":"Boston Celtics",
+    "bro":"Brooklyn Nets",
+    "nyk":"New York Knicks",
+    "phi":"Philadelphia 76ers",
+    "tor":"Toronto Raptors",
+    "chi":"Chicago Bulls",
+    "cle":"Cleveland Cavaliers",
+    "det":"Detroit Pistons",
+    "ind":"Indiana Pacers",
+    "mil":"Milwaukee Bucks",
+    "atl":"Atlanta Hawks",
+    "cha":"Charlotte Hornets",
+    "mia":"Miami Heat",
+    "orl":"Orlando Magic",
+    "was":"Washington Wizards"
+}
