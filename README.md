@@ -1,4 +1,4 @@
-﻿# nbastats
+﻿# NbaStatsCLI
 
 Hi buddy! You're just on my fuckin' directory to know **NBA Player Stats**.
 
