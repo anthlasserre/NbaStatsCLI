@@ -2,9 +2,10 @@
 
 const program = require('commander')
 const chalk = require('chalk')
+const inquirer = require('inquirer')
 const { getPlayerStat, getTeamStat } = require('./getJson')
 const { playerData, playerPicture } = require('./player')
-const { teamData, getTeamName } = require('./team')
+const { teamData, getTeamName, choiceTeam } = require('./team')
 
 program
 .version('1.2.0')
@@ -30,7 +31,6 @@ if (program.player) {
 } else if (program.team) {
     const teamname = `${program.team}`
     getTeamName(teamname)
-    // console.log(chalk.bgRed('You are searching: %s'), teamname)
     getTeamStat(teamname).then((data) => {
         teamData(data)
     }).catch((err) => {
@@ -39,4 +39,4 @@ if (program.player) {
 } else {
     program.help()
 }
-
+module.exports.teamData = teamData;

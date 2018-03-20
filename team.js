@@ -7,6 +7,7 @@ const chalk = require('chalk')
 
 const { playerData, playerPicture } = require('./player');
 const { getPlayerStat } = require('./getJson');
+const { choiceTeam } = require('./choiceTeam');
 
 var playersTeam = [];
 
@@ -19,18 +20,16 @@ module.exports.teamData = function (data) {
     const jsonObject = JSON.parse(data);
     const countPlayers = jsonObject.length;
     if(countPlayers == 0) {
-        console.log(chalk.bgRed("Please enter a team like this:"));
-        console.log(chalk.bgGreen("nbastats -t sas") + " (for San Antonio Spurs)");
-        console.log(chooseTeam)
+        choiceTeam();
         return;
     }
     console.log('We\'ve found ' + countPlayers + " players!")
 
     for(i = 0; i < countPlayers; i++) {
-    playersTeam.push(jsonObject[i].name)
+        playersTeam.push(jsonObject[i].name)
     }
 
-    // console.log(playersTeam)
+    console.log(playersTeam)
 
 inquirer.prompt([
     {
@@ -56,7 +55,6 @@ inquirer.prompt([
 })
 
 }
-
 const chooseTeam = {
     "gsw":"Golden State Warriors",
     "lac":"Los Angeles Clippers",
